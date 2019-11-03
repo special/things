@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Switch to another user's login session, in a quick and scriptable way.
+# Handy for keyboard shortcuts.
+
+if [ -z $1 ]; then
+    echo "usage: $0 [user]"
+    exit 1
+fi
+TARGET=$1
+
+SESSION=`loginctl show-user $TARGET | grep 'Sessions=' | cut -d '=' -f 2`
+if [ -z $SESSION ]; then
+    echo "no session found for user $TARGET"
+    exit 1
+fi
+loginctl activate $SESSION
